@@ -105,10 +105,10 @@ public class ConnectFragment extends Fragment {
                 list.add(bt.getName() + "\n" + bt.getAddress());
             }
         }
-        /*else
+        else
         {
             Toast.makeText(getActivity().getApplicationContext(), "No Paired Bluetooth Devices Found", Toast.LENGTH_LONG).show();
-        }*/
+        }
 
         final ArrayAdapter adapter = new ArrayAdapter(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1, list);
         deviceList.setAdapter(adapter);
