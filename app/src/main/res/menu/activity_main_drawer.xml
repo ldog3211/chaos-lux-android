@@ -11,7 +11,7 @@
         <item
             android:id="@+id/nav_color"
             android:icon="@drawable/ic_menu_bulb"
-            android:title="Color/Pattern Selector" />
+            android:title="LUX Effects" />
         <item
             android:id="@+id/nav_metronome"
             android:icon="@drawable/ic_menu_slideshow"

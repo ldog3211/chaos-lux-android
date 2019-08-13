@@ -32,6 +32,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,13 +58,26 @@ public class MainActivity extends AppCompatActivity
     private ListView deviceList;*/
 
     static int[] imageResources = {
-            R.drawable.pedal_render_transparent_top_down,
-            R.drawable.pedal_render_transparent_top_down,
-            R.drawable.pedal_render_transparent_top_down,
-            R.drawable.pedal_render_transparent_top_down,
-            R.drawable.pedal_render_transparent_top_down,
-            R.drawable.pedal_render_transparent_top_down,
+            R.drawable.pedal_render_transparent_top_down_no_color_with_background,
+            R.drawable.pedal_render_transparent_top_down_no_color_with_background,
+            R.drawable.pedal_render_transparent_top_down_no_color_with_background,
+            R.drawable.pedal_render_transparent_top_down_no_color_with_background,
+            R.drawable.pedal_render_transparent_top_down_no_color_with_background,
+            R.drawable.pedal_render_transparent_top_down_no_color_with_background,
     };
+
+    static int[] imageBackgrounds = {
+            R.drawable.off_pedal_background,
+            R.drawable.spectrum_pedal_background,
+            R.drawable.mardi_pedal_background,
+            R.drawable.random_pedal_background,
+            R.drawable.uncle_sam_pedal_background,
+            R.drawable.power_save_pedal_background,
+    };
+
+    static String lastText = "OFF";
+    static int lastPage;
+    static int lastButtonBackground = R.drawable.off_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

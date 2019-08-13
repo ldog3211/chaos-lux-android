@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -14,14 +15,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+
+import static android.content.Context.VIBRATOR_SERVICE;
 
 
 /**
@@ -34,6 +40,11 @@ public class ColorFragment extends Fragment {
 
     private ViewPager colorPager;
     private TextView colorName;
+    private Vibrator vibrate;
+    private SeekBar brightness;
+    /*private String lastText = "OFF";
+    private int lastPage = 0;
+    private int lastButtonBackground = R.drawable.off_button;*/
 
     public ColorFragment() {
         // Required empty public constructor
@@ -47,47 +58,111 @@ public class ColorFragment extends Fragment {
         return inflater.inflate(R.layout.color_fragment, container, false);
     }
 
+    /*@Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("lastText", lastText);
+        outState.putInt("lastPage", lastPage);
+        outState.putInt("lastButtonBackground", lastButtonBackground);
+    }*/
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //lastText = savedInstanceState.getString("lastText");
+        //lastPage = savedInstanceState.getInt("lastPage");
+        //lastButtonBackground = savedInstanceState.getInt("lastButtonBackground");
         //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Color/Pattern Selector");
-
+        getActivity().setTitle("LUX Effects");
+        brightness = getView().findViewById(R.id.brightness);
+        vibrate = (Vibrator)getActivity().getSystemService(VIBRATOR_SERVICE);
         colorPager = getView().findViewById(R.id.viewPager2);
-        colorPager.setPadding(200,0,200,0);
+        colorPager.setPadding(200,0, 200,0);
         colorPager.setClipToPadding(false);
         colorPager.setPageMargin(10);
+        colorPager.setHapticFeedbackEnabled(true);
         colorName = getView().findViewById(R.id.txtDescription);
+        colorName.setText(MainActivity.lastText);
+        colorName.setBackgroundResource(MainActivity.lastButtonBackground);
         setUpPagerAdapter();
         colorPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             public void onPageScrollStateChanged(int state) {}
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
 
             public void onPageSelected(int position) {
+                vibrate.vibrate(5);
                 if (position == 0) {
                     colorName.setText("OFF");
                     colorName.setBackgroundResource(R.drawable.off_button);
+                    MainActivity.lastText = colorName.getText().toString();
+                    MainActivity.lastPage = 0;
+                    MainActivity.lastButtonBackground = R.drawable.off_button;
                     turnOffLed();
                 } else if (position == 1) {
-                    colorName.setText("SPECTRUM");
+                    colorName.setText("WAVE");
                     colorName.setBackgroundResource(R.drawable.rainbow_button);
+                    MainActivity.lastText = colorName.getText().toString();
+                    MainActivity.lastPage = 1;
+                    MainActivity.lastButtonBackground = R.drawable.rainbow_button;
                     setRainbowLed();
                 } else if (position == 2) {
                     colorName.setText("MARDI GRAS");
                     colorName.setBackgroundResource(R.drawable.purple_green_button);
+                    MainActivity.lastText = colorName.getText().toString();
+                    MainActivity.lastPage = 2;
+                    MainActivity.lastButtonBackground = R.drawable.purple_green_button;
                     setPurpleAndGreenLed();
                 } else if (position == 3) {
                     colorName.setText("RANDOM");
                     colorName.setBackgroundResource(R.drawable.random_button);
+                    MainActivity.lastText = colorName.getText().toString();
+                    MainActivity.lastPage = 3;
+                    MainActivity.lastButtonBackground = R.drawable.random_button;
                     setRandomLed();
                 } else if (position == 4) {
                     colorName.setText("UNCLE SAM");
                     colorName.setBackgroundResource(R.drawable.uncle_sam_button);
+                    MainActivity.lastText = colorName.getText().toString();
+                    MainActivity.lastPage = 4;
+                    MainActivity.lastButtonBackground = R.drawable.uncle_sam_button;
                     setUncleSamLed();
                 } else if (position == 5) {
                     colorName.setText("POWER SAVER");
                     colorName.setBackgroundResource(R.drawable.power_save_button);
+                    MainActivity.lastText = colorName.getText().toString();
+                    MainActivity.lastPage = 5;
+                    MainActivity.lastButtonBackground = R.drawable.power_save_button;
                     setPowerSaveLed();
+                }
+            }
+        });
+
+        brightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressValue = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                progressValue = i;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (btSocket != null) {
+                    try {
+                        btSocket.getOutputStream().write(progressValue + 1000);
+                    } catch (IOException e) {
+                        Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    //Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+                    //colorName.setText("NOT CONNECTED");
                 }
             }
         });
@@ -181,7 +256,8 @@ public class ColorFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+                // colorName.setText("NOT CONNECTED");
             }
 
         }
@@ -196,7 +272,8 @@ public class ColorFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+                //colorName.setText("NOT CONNECTED");
             }
         }
 
@@ -210,7 +287,8 @@ public class ColorFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+                //colorName.setText("NOT CONNECTED");
             }
         }
 
@@ -224,7 +302,8 @@ public class ColorFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+                //colorName.setText("NOT CONNECTED");
             }
         }
 
@@ -238,7 +317,8 @@ public class ColorFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+                //colorName.setText("NOT CONNECTED");
             }
         }
 
@@ -251,7 +331,8 @@ public class ColorFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+                //colorName.setText("NOT CONNECTED");
             }
         }
 
@@ -265,7 +346,8 @@ public class ColorFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity().getApplicationContext(), "Not Connected", Toast.LENGTH_SHORT).show();
+                //colorName.setText("NOT CONNECTED");
             }
         }
 

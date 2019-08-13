@@ -6,13 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.PagerAdapter;
 
 public class ImagePagerAdapter extends PagerAdapter {
 
     Context mContext;
     LayoutInflater mLayoutInflater;
+    private static ImageView colorImage;
 
     public ImagePagerAdapter(Context context) {
         mContext = context;
@@ -35,6 +38,7 @@ public class ImagePagerAdapter extends PagerAdapter {
 
         ImageView imageView = itemView.findViewById(R.id.imageView3);
         imageView.setImageResource(MainActivity.imageResources[position]);
+        imageView.setBackgroundResource(MainActivity.imageBackgrounds[position]);
 
         container.addView(itemView);
 
@@ -43,7 +47,7 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((LinearLayout)object);
+        container.removeView((ConstraintLayout)object);
     }
 
 }
