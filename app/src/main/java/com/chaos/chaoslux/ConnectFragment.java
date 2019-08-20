@@ -110,7 +110,7 @@ public class ConnectFragment extends Fragment {
             Toast.makeText(getActivity().getApplicationContext(), "No Paired Bluetooth Devices Found", Toast.LENGTH_LONG).show();
         }
 
-        final ArrayAdapter adapter = new ArrayAdapter(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1, list);
+        final ArrayAdapter adapter = new ArrayAdapter(getActivity().getApplicationContext(), R.layout.device_list_text, list);
         deviceList.setAdapter(adapter);
         deviceList.setOnItemClickListener(myListClickListener); //Method called when the device from the list is clicked
     }

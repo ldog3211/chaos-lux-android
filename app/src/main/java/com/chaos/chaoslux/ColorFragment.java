@@ -156,7 +156,8 @@ public class ColorFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (btSocket != null) {
                     try {
-                        btSocket.getOutputStream().write(progressValue + 1000);
+                        int newValue = progressValue + 1000;
+                        btSocket.getOutputStream().write(progressValue);
                     } catch (IOException e) {
                         Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                     }
@@ -266,8 +267,8 @@ public class ColorFragment extends Fragment {
         {
             if (btSocket != null) {
                 try {
-                    btSocket.getOutputStream().write("0".getBytes());
-                    btSocket.getOutputStream().write("0".getBytes());
+                    btSocket.getOutputStream().write(0);
+                    btSocket.getOutputStream().write(0);
                 } catch (IOException e) {
                     Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
@@ -281,8 +282,8 @@ public class ColorFragment extends Fragment {
         {
             if (btSocket != null) {
                 try {
-                    btSocket.getOutputStream().write("1".getBytes());
-                    btSocket.getOutputStream().write("1".getBytes());
+                    btSocket.getOutputStream().write(1);
+                    btSocket.getOutputStream().write(1);
                 } catch (IOException e) {
                     Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
@@ -296,8 +297,8 @@ public class ColorFragment extends Fragment {
         {
             if (btSocket != null) {
                 try {
-                    btSocket.getOutputStream().write("2".getBytes());
-                    btSocket.getOutputStream().write("2".getBytes());
+                    btSocket.getOutputStream().write(2);
+                    btSocket.getOutputStream().write(2);
                 } catch (IOException e) {
                     Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
@@ -311,8 +312,8 @@ public class ColorFragment extends Fragment {
         {
             if (btSocket != null) {
                 try {
-                    btSocket.getOutputStream().write("3".getBytes());
-                    btSocket.getOutputStream().write("3".getBytes());
+                    btSocket.getOutputStream().write(3);
+                    btSocket.getOutputStream().write(3);
                 } catch (IOException e) {
                     Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
@@ -326,7 +327,7 @@ public class ColorFragment extends Fragment {
         {
             if (btSocket != null) {
                 try {
-                    btSocket.getOutputStream().write("4".getBytes());
+                    btSocket.getOutputStream().write(4);
                 } catch (IOException e) {
                     Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
@@ -340,8 +341,8 @@ public class ColorFragment extends Fragment {
         {
             if (btSocket != null) {
                 try {
-                    btSocket.getOutputStream().write("5".getBytes());
-                    btSocket.getOutputStream().write("5".getBytes());
+                    btSocket.getOutputStream().write(5);
+                    btSocket.getOutputStream().write(5);
                 } catch (IOException e) {
                     Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
